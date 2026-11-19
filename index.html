@@ -38,7 +38,6 @@
         }
     </script>
     <style>
-        /* Personalización de scrollbar y visor de Markdown */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -60,7 +59,7 @@
 </head>
 <body class="bg-slate-50 dark:bg-darkbg text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 flex flex-col font-sans">
 
-    <!-- CABECERA FLOTANTE PARA DISPOSITIVOS MÓVILES -->
+    <!-- HEADER MÓVIL -->
     <header class="lg:hidden bg-white dark:bg-darkcard border-b border-slate-200 dark:border-darkborder p-4 flex items-center justify-between sticky top-0 z-40 shadow-md">
         <div class="flex items-center gap-3">
             <button id="mobile-menu-btn" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
@@ -81,12 +80,12 @@
         </div>
     </header>
 
-    <!-- NOTIFICACIONES TOAST FLOTANTES -->
+    <!-- NOTIFICACIONES TOAST -->
     <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2 pointer-events-none max-w-sm w-full"></div>
 
     <div class="flex flex-1 relative overflow-hidden">
         
-        <!-- SIDEBAR / MENÚ LATERAL TIPO WIKI -->
+        <!-- SIDEBAR / MENÚ LATERAL -->
         <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-white dark:bg-darkcard border-r border-slate-200 dark:border-darkborder transform -translate-x-full lg:translate-x-0 transition-transform duration-200 flex flex-col h-screen lg:h-auto shadow-xl lg:shadow-none">
             
             <!-- Encabezado Sidebar -->
@@ -96,7 +95,7 @@
                         <i class="fa-solid fa-network-wired text-brand-500"></i>
                         CASADOMOTICA
                     </h1>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Wiki & Repositorio 2.º ASIR • <span class="font-mono text-emerald-400">Deadpanzer12</span></p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Wiki & Repositorio 2.º ASIR • <span id="sidebar-owner-repo" class="font-mono text-emerald-400">Deadpanzer12</span></p>
                 </div>
                 <button id="close-sidebar-btn" class="lg:hidden p-1.5 text-slate-400 hover:text-white">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -113,7 +112,6 @@
 
             <!-- Navegación -->
             <nav class="flex-1 overflow-y-auto px-4 pb-6 space-y-5 text-xs">
-                <!-- Principal -->
                 <div>
                     <button onclick="showView('dashboard')" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-target="dashboard">
                         <i class="fa-solid fa-house text-brand-500 w-4 text-center"></i>
@@ -121,7 +119,6 @@
                     </button>
                 </div>
 
-                <!-- Botón Acción Publicar -->
                 <div>
                     <button onclick="showView('editor')" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-md transition-all">
                         <i class="fa-solid fa-plus-circle"></i>
@@ -132,8 +129,8 @@
                 <!-- Lista de Asignaturas -->
                 <div>
                     <div class="flex items-center justify-between px-3 mb-2">
-                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Asignaturas (10 Módulos)</h3>
-                        <button onclick="showView('settings')" title="Ajustes de asignaturas" class="text-[10px] text-brand-500 hover:underline">Configurar</button>
+                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Asignaturas (<span id="subj-count-badge">10</span> Módulos)</h3>
+                        <button onclick="showView('settings')" title="Ajustes de asignaturas" class="text-[10px] text-brand-500 hover:underline">Gestionar</button>
                     </div>
                     <div class="space-y-1" id="sidebar-subjects-list"></div>
                 </div>
@@ -142,27 +139,27 @@
                 <div>
                     <div class="flex items-center justify-between px-3 mb-2">
                         <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Adicionales & Homelab</h3>
-                        <span class="text-[10px] bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded font-mono">auto</span>
+                        <button onclick="showView('settings')" class="text-[10px] text-amber-500 hover:underline">Gestionar</button>
                     </div>
                     <div class="space-y-1" id="sidebar-extras-list"></div>
                 </div>
 
-                <!-- Herramientas -->
+                <!-- Ajustes -->
                 <div>
-                    <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">Ajustes & Cuenta</h3>
+                    <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">Ajustes & Token</h3>
                     <div class="space-y-1">
                         <button onclick="showView('settings')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-target="settings">
                             <i class="fa-solid fa-key text-amber-500 w-4 text-center"></i>
-                            Token GitHub & Asignaturas
+                            Token GitHub & Configuración
                         </button>
                     </div>
                 </div>
             </nav>
 
-            <!-- Pie del Sidebar -->
+            <!-- Footer Sidebar -->
             <div class="p-4 border-t border-slate-200 dark:border-darkborder text-[11px] text-slate-500 flex items-center justify-between">
                 <button onclick="refreshGitHubData()" class="flex items-center gap-1.5 text-brand-500 hover:underline">
-                    <i class="fa-solid fa-arrows-rotate"></i> Recargar Datos
+                    <i class="fa-solid fa-arrows-rotate"></i> Recargar
                 </button>
                 <button onclick="toggleTheme()" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-700 transition">
                     <span class="dark:hidden"><i class="fa-solid fa-moon"></i> Oscuro</span>
@@ -171,15 +168,13 @@
             </div>
         </aside>
 
-        <!-- ÁREA PRINCIPAL -->
+        <!-- CONTENIDO PRINCIPAL -->
         <main class="flex-1 overflow-y-auto p-4 md:p-8 max-w-7xl mx-auto w-full">
-            <div id="app-content">
-                <!-- Render dinámico -->
-            </div>
+            <div id="app-content"></div>
         </main>
     </div>
 
-    <!-- MODAL DE VISUALIZACIÓN / PREVIEW -->
+    <!-- MODAL DE VISUALIZACIÓN DE ARCHIVO -->
     <div id="file-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl max-w-4xl w-full p-6 space-y-4 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="flex items-center justify-between border-b border-slate-200 dark:border-darkborder pb-3">
@@ -198,39 +193,82 @@
             </div>
             
             <div id="modal-file-body" class="flex-1 overflow-y-auto bg-slate-950 rounded-xl p-4 font-mono text-xs text-slate-200">
-                <!-- Contenido -->
+                <!-- Contenido dinámico -->
             </div>
         </div>
     </div>
 
-    <!-- MODAL CONFIRMACIÓN GENÉRICO (Reemplazo seguro a confirm()) -->
+    <!-- MODAL DE EDICIÓN DE ARCHIVO EXISTENTE (UPDATE CON SHA) -->
+    <div id="edit-file-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl max-w-3xl w-full p-6 space-y-4 shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-darkborder pb-3">
+                <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-amber-400"></i>
+                    Editar Archivo en GitHub (<span id="edit-modal-path" class="font-mono text-xs text-brand-400">---</span>)
+                </h3>
+                <button onclick="closeEditFileModal()" class="text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 flex-1 overflow-y-auto">
+                <input type="hidden" id="edit-modal-sha">
+                <input type="hidden" id="edit-modal-fullpath">
+                
+                <div>
+                    <label class="block text-xs font-bold mb-1">Mensaje de Commit</label>
+                    <input type="text" id="edit-modal-commit" value="Actualizar archivo desde web CASADOMOTICA" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-xs">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold mb-1">Contenido (Texto / Markdown / Código)</label>
+                    <textarea id="edit-modal-body" rows="14" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-3 text-xs font-mono text-slate-100"></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-darkborder">
+                <button onclick="closeEditFileModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl">Cancelar</button>
+                <button onclick="submitEditFileUpdate()" id="edit-modal-submit-btn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Guardar Cambios en GitHub
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN GENÉRICO -->
     <div id="confirm-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <h3 id="confirm-modal-title" class="text-base font-bold text-slate-900 dark:text-white">¿Estás seguro?</h3>
             <p id="confirm-modal-text" class="text-xs text-slate-500 dark:text-slate-400">Esta acción no se puede deshacer.</p>
             <div class="flex justify-end gap-2 pt-2">
                 <button id="confirm-modal-cancel" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl">Cancelar</button>
-                <button id="confirm-modal-accept" class="px-4 py-2 bg-rose-600 text-white text-xs font-semibold rounded-xl">Confirmar</button>
+                <button id="confirm-modal-accept" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold rounded-xl">Confirmar</button>
             </div>
         </div>
     </div>
 
-    <!-- LOGICA JS -->
+    <!-- LÓGICA DE APLICACIÓN EN JS -->
     <script>
-        const GITHUB_OWNER = "Deadpanzer12";
-        const GITHUB_REPO = "CASADOMOTICA";
+        // CONFIGURACIÓN BASE DE REPOSICION Y ASIGNATURAS DE 2.º ASIR
+        const DEFAULT_OWNER = "Deadpanzer12";
+        const DEFAULT_REPO = "CASADOMOTICA";
 
         const DEFAULT_SUBJECTS = [
-            { id: "aso", codigo: "ASO", nombre: "Administración de Sistemas Operativos", folder: "aso", icon: "fa-laptop-code", color: "sky", desc: "Linux/Windows Server, automatización con Bash/PowerShell y administración." },
+            { id: "aso", codigo: "ASO", nombre: "Administración de Sistemas Operativos", folder: "aso", icon: "fa-laptop-code", color: "sky", desc: "Linux/Windows Server, automatización con Bash/PowerShell y administración de servicios." },
             { id: "digitalizacion", codigo: "DIG", nombre: "Digitalización", folder: "digitalizacion", icon: "fa-cloud-arrow-up", color: "indigo", desc: "Transformación digital, metodologías ágiles y entornos Cloud Native." },
             { id: "sgea", codigo: "SGEA", nombre: "Sistemas De Gestión Empresariales Actuales", folder: "sgea", icon: "fa-boxes-stacked", color: "purple", desc: "Implantación, desarrollo de módulos y configuración de ERPs (Odoo)." },
-            { id: "iaw", codigo: "IAW", nombre: "Implantación de aplicaciones WEB", folder: "iaw", icon: "fa-globe", color: "emerald", desc: "Servidores web Nginx/Apache, pilas LAMP/LEMP, HTTPS y PHP." },
+            { id: "iaw", codigo: "IAW", nombre: "Implantación de aplicaciones WEB", folder: "iaw", icon: "fa-globe", color: "emerald", desc: "Servidores web Nginx/Apache, pilas LAMP/LEMP, HTTPS y desplegables PHP." },
             { id: "ip2", codigo: "IP2", nombre: "IP2 (Iniciativa y Proyecto 2)", folder: "ip2", icon: "fa-diagram-project", color: "amber", desc: "Proyecto integrador de infraestructuras y domótica CASADOMOTICA." },
-            { id: "redes", codigo: "RED", nombre: "Redes", folder: "redes", icon: "fa-network-wired", color: "blue", desc: "Enrutamiento OSPF, VLANs, switching L3 y Packet Tracer." },
-            { id: "sad", codigo: "SAD", nombre: "Seguridad y Alta Disponibilidad", folder: "sad", icon: "fa-shield-halved", color: "rose", desc: "Firewalls, SSL/TLS, hardening SSH, Fail2ban y clústeres HA." },
-            { id: "nube", codigo: "NUBE", nombre: "Servicios en la nube", folder: "nube", icon: "fa-cloud", color: "teal", desc: "Despliegues Cloud (AWS, Azure), IaaC con Terraform y Docker." },
+            { id: "redes", codigo: "RED", nombre: "Redes", folder: "redes", icon: "fa-network-wired", color: "blue", desc: "Enrutamiento OSPF, VLANs, switching L3 y laboratorios de Packet Tracer." },
+            { id: "sad", codigo: "SAD", nombre: "Seguridad y Alta Disponibilidad", folder: "sad", icon: "fa-shield-halved", color: "rose", desc: "Firewalls, SSL/TLS, hardening SSH, Fail2ban y clústeres en Alta Disponibilidad." },
+            { id: "nube", codigo: "NUBE", nombre: "Servicios en la nube", folder: "nube", icon: "fa-cloud", color: "teal", desc: "Despliegues Cloud (AWS, Azure), IaaC con Terraform y contenedores Docker." },
             { id: "sgbd", codigo: "SGBD", nombre: "Sistemas Gestores de Bases de Datos", folder: "sgbd", icon: "fa-database", color: "cyan", desc: "Administración de MariaDB/PostgreSQL, réplicas y copias de seguridad." },
             { id: "sostenibilidad", codigo: "SOST", nombre: "Sostenibilidad", folder: "sostenibilidad", icon: "fa-leaf", color: "green", desc: "Green IT, cálculo del PUE en Datacenters y eficiencia energética." }
+        ];
+
+        const DEFAULT_EXTRAS = [
+            { id: "tunel-ssh", nombre: "Túnel SSH Remoto", folder: "tunel-ssh", icon: "fa-terminal", desc: "Configuración de acceso seguro remoto por SSH con claves RSA y puertos reenviados." },
+            { id: "nas-casero", nombre: "NAS Casero RAID 5", folder: "nas-casero", icon: "fa-hard-drive", desc: "Servidor de almacenamiento en red con almacenamiento redundante Samba/NFS." }
         ];
 
         let appConfig = loadAppConfig();
@@ -248,9 +286,22 @@
         function loadAppConfig() {
             const saved = localStorage.getItem('casadomotica_config');
             if (saved) {
-                try { return JSON.parse(saved); } catch(e) {}
+                try {
+                    const parsed = JSON.parse(saved);
+                    return {
+                        owner: parsed.owner || DEFAULT_OWNER,
+                        repo: parsed.repo || DEFAULT_REPO,
+                        subjects: parsed.subjects || DEFAULT_SUBJECTS,
+                        extras: parsed.extras || DEFAULT_EXTRAS
+                    };
+                } catch(e) {}
             }
-            return { subjects: DEFAULT_SUBJECTS };
+            return {
+                owner: DEFAULT_OWNER,
+                repo: DEFAULT_REPO,
+                subjects: DEFAULT_SUBJECTS,
+                extras: DEFAULT_EXTRAS
+            };
         }
 
         function saveAppConfig(cfg) {
@@ -306,63 +357,66 @@
         }
 
         /* -------------------------------------------------------------------------- */
-        /*   API GITHUB REST (LECTURA Y ESCRITURA)                                   */
+        /*   CONEXIÓN API DE GITHUB (READ, WRITE, UPDATE, DELETE)                      */
         /* -------------------------------------------------------------------------- */
         async function fetchGitHubContents(path = '') {
             const cacheKey = `gh_contents_${path}`;
             if (githubCache[cacheKey]) return githubCache[cacheKey];
 
-            const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+            const url = `https://api.github.com/repos/${appConfig.owner}/${appConfig.repo}/contents/${path}`;
             const headers = { 'Accept': 'application/vnd.github.v3+json' };
             if (ghToken) headers['Authorization'] = `token ${ghToken}`;
 
             try {
                 const res = await fetch(url, { headers });
-                if (res.status === 404) return { error: '404', message: 'Carpeta o archivo no encontrado' };
-                if (res.status === 403) return { error: '403', message: 'Límite de API alcanzado o token inválido' };
+                if (res.status === 404) return { error: '404', message: 'Carpeta o archivo no encontrado en GitHub' };
+                if (res.status === 403) return { error: '403', message: 'Permiso denegado o límite de API alcanzado' };
                 if (!res.ok) return { error: res.status, message: `Error HTTP ${res.status}` };
 
                 const data = await res.json();
                 githubCache[cacheKey] = data;
                 return data;
             } catch (err) {
-                return { error: 'network', message: 'Error de red con GitHub API' };
+                return { error: 'network', message: 'Error de red con la API de GitHub' };
             }
         }
 
         async function fetchRawFileContent(downloadUrl) {
             try {
                 const res = await fetch(downloadUrl);
-                if (!res.ok) return 'Error al descargar archivo.';
+                if (!res.ok) return 'Error al descargar el contenido del archivo.';
                 return await res.text();
-            } catch(e) { return 'Error de red.'; }
+            } catch(e) { return 'Error de red al obtener el contenido raw.'; }
         }
 
-        async function pushFileToGitHub(path, base64Content, commitMessage) {
+        // Subir o actualizar archivo (si se incluye sha, sobrescribe)
+        async function pushFileToGitHub(path, base64Content, commitMessage, existingSha = null) {
             if (!ghToken) {
-                showToast("Se requiere un Personal Access Token de GitHub para publicar.", "error");
+                showToast("Necesitas configurar un Token de GitHub con permiso de escritura.", "error");
                 return false;
             }
 
-            const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+            const url = `https://api.github.com/repos/${appConfig.owner}/${appConfig.repo}/contents/${path}`;
             
-            // Comprobar si el archivo ya existe para obtener su SHA (actualización)
-            let existingSha = null;
-            try {
-                const checkRes = await fetch(url, {
-                    headers: { 'Authorization': `token ${ghToken}`, 'Accept': 'application/vnd.github.v3+json' }
-                });
-                if (checkRes.ok) {
-                    const checkData = await checkRes.json();
-                    existingSha = checkData.sha;
-                }
-            } catch (e) {}
+            // Si no nos pasan el sha, intentamos consultarlo
+            let targetSha = existingSha;
+            if (!targetSha) {
+                try {
+                    const checkRes = await fetch(url, {
+                        headers: { 'Authorization': `token ${ghToken}`, 'Accept': 'application/vnd.github.v3+json' }
+                    });
+                    if (checkRes.ok) {
+                        const checkData = await checkRes.json();
+                        targetSha = checkData.sha;
+                    }
+                } catch (e) {}
+            }
 
             const bodyPayload = {
-                message: commitMessage || `Publicado desde Editor Web CASADOMOTICA`,
+                message: commitMessage || `Actualizado desde CASADOMOTICA Web`,
                 content: base64Content
             };
-            if (existingSha) bodyPayload.sha = existingSha;
+            if (targetSha) bodyPayload.sha = targetSha;
 
             try {
                 const putRes = await fetch(url, {
@@ -376,7 +430,7 @@
                 });
 
                 if (putRes.ok || putRes.status === 201 || putRes.status === 200) {
-                    githubCache = {}; // Invalidate cache
+                    githubCache = {}; // Limpiar caché
                     return true;
                 } else {
                     const errData = await putRes.json();
@@ -384,7 +438,45 @@
                     return false;
                 }
             } catch (err) {
-                showToast("Error de conexión al subir archivo.", "error");
+                showToast("Error de conexión al guardar cambios en GitHub.", "error");
+                return false;
+            }
+        }
+
+        // Borrar archivo usando su SHA
+        async function deleteFileFromGitHub(path, sha, commitMessage) {
+            if (!ghToken) {
+                showToast("Se requiere un Token de GitHub para eliminar archivos.", "error");
+                return false;
+            }
+
+            const url = `https://api.github.com/repos/${appConfig.owner}/${appConfig.repo}/contents/${path}`;
+            const bodyPayload = {
+                message: commitMessage || `Eliminar ${path} desde web CASADOMOTICA`,
+                sha: sha
+            };
+
+            try {
+                const delRes = await fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `token ${ghToken}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify(bodyPayload)
+                });
+
+                if (delRes.ok) {
+                    githubCache = {}; // Limpiar caché
+                    return true;
+                } else {
+                    const errData = await delRes.json();
+                    showToast(`Error al borrar en GitHub: ${errData.message || delRes.statusText}`, "error");
+                    return false;
+                }
+            } catch (err) {
+                showToast("Error de conexión al eliminar archivo de GitHub.", "error");
                 return false;
             }
         }
@@ -392,13 +484,16 @@
         function refreshGitHubData() {
             githubCache = {};
             renderView(currentView, currentParam);
-            showToast("Datos recargados desde GitHub", "info");
+            showToast("Vista recargada desde la API de GitHub", "info");
         }
 
         /* -------------------------------------------------------------------------- */
-        /*   SIDEBAR & VISTAS                                                         */
+        /*   SIDEBAR & NAVEGACIÓN                                                     */
         /* -------------------------------------------------------------------------- */
         function initSidebar() {
+            document.getElementById('sidebar-owner-repo').innerText = `${appConfig.owner}/${appConfig.repo}`;
+            document.getElementById('subj-count-badge').innerText = appConfig.subjects.length;
+
             const subjContainer = document.getElementById('sidebar-subjects-list');
             subjContainer.innerHTML = appConfig.subjects.map(asig => `
                 <button onclick="showView('subject', '${asig.id}')" class="nav-item w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-target="subject-${asig.id}">
@@ -410,43 +505,20 @@
                 </button>
             `).join('');
 
-            loadSidebarExtras();
+            const extraContainer = document.getElementById('sidebar-extras-list');
+            extraContainer.innerHTML = appConfig.extras.map(extra => `
+                <button onclick="showView('extra', '${extra.id}')" class="nav-item w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-target="extra-${extra.id}">
+                    <span class="flex items-center gap-2 truncate">
+                        <i class="fa-solid ${extra.icon || 'fa-terminal'} text-amber-500 w-4 text-center"></i>
+                        <span class="truncate">${extra.nombre}</span>
+                    </span>
+                    <span class="text-[9px] bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded font-mono">${extra.folder}</span>
+                </button>
+            `).join('');
 
             const sidebar = document.getElementById('sidebar');
             document.getElementById('mobile-menu-btn').onclick = () => sidebar.classList.remove('-translate-x-full');
             document.getElementById('close-sidebar-btn').onclick = () => sidebar.classList.add('-translate-x-full');
-        }
-
-        async function loadSidebarExtras() {
-            const extraContainer = document.getElementById('sidebar-extras-list');
-            extraContainer.innerHTML = `<span class="text-[11px] text-slate-500 px-3 flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Cargando...</span>`;
-            
-            const contents = await fetchGitHubContents('adicionales');
-            
-            if (Array.isArray(contents)) {
-                const subfolders = contents.filter(item => item.type === 'dir');
-                if (subfolders.length === 0) {
-                    extraContainer.innerHTML = `<span class="text-[11px] text-slate-500 px-3">Carpeta vacía</span>`;
-                } else {
-                    extraContainer.innerHTML = subfolders.map(sub => `
-                        <button onclick="showView('extra', '${sub.name}')" class="nav-item w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors truncate" data-target="extra-${sub.name}">
-                            <i class="fa-solid fa-folder-open text-amber-500 w-4 text-center"></i>
-                            <span class="truncate capitalize">${sub.name.replace(/-/g, ' ')}</span>
-                        </button>
-                    `).join('');
-                }
-            } else {
-                extraContainer.innerHTML = `
-                    <button onclick="showView('extra', 'tunel-ssh')" class="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        <i class="fa-solid fa-terminal text-amber-500 w-4 text-center"></i>
-                        <span class="truncate">Túnel SSH Remoto</span>
-                    </button>
-                    <button onclick="showView('extra', 'nas-casero')" class="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        <i class="fa-solid fa-hard-drive text-amber-500 w-4 text-center"></i>
-                        <span class="truncate">NAS Casero RAID 5</span>
-                    </button>
-                `;
-            }
         }
 
         function showView(view, param = null) {
@@ -464,7 +536,8 @@
                 const asig = appConfig.subjects.find(a => a.id === param);
                 renderSubjectView(asig, container);
             } else if (view === 'extra') {
-                renderExtraView(param, container);
+                const extra = appConfig.extras.find(e => e.id === param);
+                renderExtraView(extra, container);
             } else if (view === 'editor') {
                 container.innerHTML = renderEditorHTML();
                 setupEditorForm();
@@ -484,19 +557,19 @@
                         <div class="relative z-10 space-y-4 max-w-3xl">
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-mono">
                                 <i class="fa-brands fa-github"></i>
-                                <span>Deadpanzer12 / CASADOMOTICA</span>
+                                <span>${appConfig.owner} / ${appConfig.repo}</span>
                             </div>
                             <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
                                 Portafolio & Wiki <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-400">2.º ASIR</span>
                             </h1>
                             <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
-                                Documentación técnica y entregas del curso. Consulta o publica directamente guías en Markdown, scripts (.sh, .ps1), laboratorios de redes y proyectos Homelab.
+                                Documentación técnica y entregas del curso. Publica, edita o elimina guías Markdown, scripts (.sh, .ps1), laboratorios de redes y proyectos Homelab directamente desde la web.
                             </p>
                             <div class="flex flex-wrap gap-3 pt-2">
                                 <button onclick="showView('editor')" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl transition shadow-lg flex items-center gap-2">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i> Abrir Modo Editor / Publicar
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Publicar / Crear Archivo
                                 </button>
-                                <a href="https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}" target="_blank" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-2">
+                                <a href="https://github.com/${appConfig.owner}/${appConfig.repo}" target="_blank" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-2">
                                     <i class="fa-brands fa-github text-brand-400"></i> Repositorio en GitHub
                                 </a>
                             </div>
@@ -508,7 +581,7 @@
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                 <i class="fa-solid fa-graduation-cap text-brand-500"></i>
-                                Módulos del Curso (10 Asignaturas)
+                                Módulos del Curso (${appConfig.subjects.length} Asignaturas)
                             </h2>
                             <button onclick="showView('settings')" class="text-xs text-brand-500 hover:underline">Gestionar módulos</button>
                         </div>
@@ -534,6 +607,44 @@
 
                                     <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-brand-600 dark:text-brand-400">
                                         <span>Explorar carpeta</span>
+                                        <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- GRID ADICIONALES -->
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i class="fa-solid fa-server text-amber-500"></i>
+                                Adicionales & Homelab (${appConfig.extras.length} Proyectos)
+                            </h2>
+                            <button onclick="showView('settings')" class="text-xs text-amber-500 hover:underline">Gestionar proyectos</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${appConfig.extras.map(extra => `
+                                <div onclick="showView('extra', '${extra.id}')" class="group bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder hover:border-amber-500/50 rounded-2xl p-5 transition-all duration-200 shadow-sm hover:shadow-xl cursor-pointer flex flex-col justify-between">
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="px-2.5 py-1 bg-amber-500/10 text-amber-500 font-mono text-xs font-bold rounded-lg border border-amber-500/20">
+                                                ADICIONAL
+                                            </span>
+                                            <span class="text-[11px] font-mono text-slate-400">./adicionales/${extra.folder}/</span>
+                                        </div>
+                                        <h3 class="font-bold text-base text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors flex items-center gap-2">
+                                            <i class="fa-solid ${extra.icon || 'fa-terminal'} text-amber-500 text-sm"></i>
+                                            ${extra.nombre}
+                                        </h3>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                            ${extra.desc}
+                                        </p>
+                                    </div>
+
+                                    <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-amber-500">
+                                        <span>Abrir proyecto</span>
                                         <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
                                     </div>
                                 </div>
@@ -571,7 +682,7 @@
                             <span class="px-3 py-1 bg-brand-500/10 text-brand-500 font-mono text-xs font-bold rounded-lg border border-brand-500/20">
                                 ./asignaturas/${asig.folder}/
                             </span>
-                            <a href="https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/tree/main/asignaturas/${asig.folder}" target="_blank" class="text-xs text-brand-400 hover:underline flex items-center gap-1">
+                            <a href="https://github.com/${appConfig.owner}/${appConfig.repo}/tree/main/asignaturas/${asig.folder}" target="_blank" class="text-xs text-brand-400 hover:underline flex items-center gap-1">
                                 <i class="fa-brands fa-github"></i> Ver en GitHub
                             </a>
                         </div>
@@ -585,7 +696,7 @@
                     <div id="subject-github-content" class="space-y-6">
                         <div class="p-8 text-center text-slate-400 font-mono text-xs">
                             <i class="fa-solid fa-spinner fa-spin text-xl mb-2 text-brand-500"></i>
-                            <p>Cargando contenidos desde GitHub...</p>
+                            <p>Cargando contenidos desde la API de GitHub...</p>
                         </div>
                     </div>
                 </div>
@@ -612,11 +723,16 @@
                     <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4 shadow-sm">
                         <div class="flex items-center justify-between border-b border-slate-200 dark:border-darkborder pb-3">
                             <span class="text-xs font-mono font-bold text-brand-500 flex items-center gap-2">
-                                <i class="fa-solid fa-book-open"></i> ${mdFile.name} (Documentación)
+                                <i class="fa-solid fa-book-open"></i> ${mdFile.name} (Documentación Principal)
                             </span>
-                            <button onclick="copyToClipboardSafe(\`${escapeJsString(rawMd)}\`, this)" class="text-xs text-slate-400 hover:text-white flex items-center gap-1">
-                                <i class="fa-regular fa-copy"></i> Copiar Raw
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openEditFileModal('${mdFile.path}', '${mdFile.sha}', '${mdFile.download_url}')" class="px-2.5 py-1 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 rounded text-xs font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar Guía
+                                </button>
+                                <button onclick="executeDeleteFile('${mdFile.path}', '${mdFile.sha}', '${mdFile.name}')" class="px-2.5 py-1 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 rounded text-xs font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="markdown-body text-slate-800 dark:text-slate-200">
                             ${marked.parse(rawMd)}
@@ -625,7 +741,7 @@
                 `;
             }
 
-            const filesListHTML = renderFilesGridHTML(data);
+            const filesListHTML = renderFilesGridHTML(data, `asignaturas/${asig.folder}`);
             githubContent.innerHTML = mdHTML + filesListHTML;
             setupCodeCopyButtons();
         }
@@ -633,47 +749,55 @@
         /* -------------------------------------------------------------------------- */
         /*   VISTA 3: PROYECTOS ADICIONALES                                          */
         /* -------------------------------------------------------------------------- */
-        async function renderExtraView(subfolderName, container) {
+        async function renderExtraView(extra, container) {
+            if (!extra) {
+                container.innerHTML = `<div class="p-4">Proyecto adicional no encontrado.</div>`;
+                return;
+            }
+
             container.innerHTML = `
                 <div class="space-y-6 animate-fade-in">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2 text-xs text-slate-500">
                             <button onclick="showView('dashboard')" class="hover:text-brand-500">Inicio</button>
                             <span>/</span>
-                            <span class="text-amber-500 font-semibold">Adicionales / ${subfolderName}</span>
+                            <span class="text-amber-500 font-semibold">Adicionales / ${extra.nombre}</span>
                         </div>
-                        <button onclick="openEditorForTarget('extra', '${subfolderName}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                        <button onclick="openEditorForTarget('extra', '${extra.folder}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5">
                             <i class="fa-solid fa-plus"></i> Publicar en este proyecto
                         </button>
                     </div>
 
                     <div class="bg-gradient-to-r from-amber-950/30 to-darkcard border border-amber-500/20 rounded-2xl p-6 space-y-2">
                         <span class="px-2.5 py-1 bg-amber-500/10 text-amber-500 text-[11px] font-mono font-bold rounded-lg border border-amber-500/20">
-                            ./adicionales/${subfolderName}/
+                            ./adicionales/${extra.folder}/
                         </span>
-                        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white capitalize">${subfolderName.replace(/-/g, ' ')}</h1>
-                        <p class="text-slate-400 text-xs">Proyecto adicional / Laboratorio Homelab.</p>
+                        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-3">
+                            <i class="fa-solid ${extra.icon || 'fa-terminal'} text-amber-500"></i>
+                            ${extra.nombre}
+                        </h1>
+                        <p class="text-slate-400 text-xs">${extra.desc}</p>
                     </div>
 
                     <div id="extra-github-content" class="space-y-6">
                         <div class="p-8 text-center text-slate-400 font-mono text-xs">
                             <i class="fa-solid fa-spinner fa-spin text-xl mb-2 text-amber-500"></i>
-                            <p>Cargando datos desde GitHub...</p>
+                            <p>Cargando archivos desde GitHub...</p>
                         </div>
                     </div>
                 </div>
             `;
 
             const githubContent = document.getElementById('extra-github-content');
-            const data = await fetchGitHubContents(`adicionales/${subfolderName}`);
+            const data = await fetchGitHubContents(`adicionales/${extra.folder}`);
 
             if (data.error) {
-                githubContent.innerHTML = renderGitHubErrorHTML(`adicionales/${subfolderName}`);
+                githubContent.innerHTML = renderGitHubErrorHTML(`adicionales/${extra.folder}`);
                 return;
             }
 
             if (!Array.isArray(data) || data.length === 0) {
-                githubContent.innerHTML = renderEmptyFolderHTML(`adicionales/${subfolderName}`);
+                githubContent.innerHTML = renderEmptyFolderHTML(`adicionales/${extra.folder}`);
                 return;
             }
 
@@ -683,6 +807,19 @@
                 const rawMd = await fetchRawFileContent(mdFile.download_url);
                 mdHTML = `
                     <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4 shadow-sm">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-darkborder pb-3">
+                            <span class="text-xs font-mono font-bold text-amber-400 flex items-center gap-2">
+                                <i class="fa-solid fa-book-open"></i> ${mdFile.name} (Documentación)
+                            </span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openEditFileModal('${mdFile.path}', '${mdFile.sha}', '${mdFile.download_url}')" class="px-2.5 py-1 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 rounded text-xs font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar Guía
+                                </button>
+                                <button onclick="executeDeleteFile('${mdFile.path}', '${mdFile.sha}', '${mdFile.name}')" class="px-2.5 py-1 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 rounded text-xs font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
                         <div class="markdown-body text-slate-800 dark:text-slate-200">
                             ${marked.parse(rawMd)}
                         </div>
@@ -690,46 +827,46 @@
                 `;
             }
 
-            const filesListHTML = renderFilesGridHTML(data);
+            const filesListHTML = renderFilesGridHTML(data, `adicionales/${extra.folder}`);
             githubContent.innerHTML = mdHTML + filesListHTML;
             setupCodeCopyButtons();
         }
 
         /* -------------------------------------------------------------------------- */
-        /*   VISTA 4: MODO EDITOR INTEGRADO (PUBLICACIÓN DIRECTA)                    */
+        /*   VISTA 4: MODO EDITOR INTEGRADO (PUBLICAR Y CREAR)                        */
         /* -------------------------------------------------------------------------- */
         function renderEditorHTML() {
             return `
                 <div class="space-y-6 animate-fade-in max-w-4xl">
                     <div class="bg-gradient-to-br from-emerald-950/40 via-darkcard to-darkcard border border-emerald-500/30 rounded-2xl p-6 space-y-2">
                         <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold rounded-lg border border-emerald-500/20">
-                            Publicador Directo a GitHub API
+                            Publicador Directo vía GitHub API
                         </span>
                         <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
                             <i class="fa-solid fa-cloud-arrow-up text-emerald-400"></i> Modo Editor & Publicador
                         </h1>
-                        <p class="text-xs text-slate-400">Redacta tu documentación o adjunta archivos directamente a tu repositorio de GitHub sin salir de la web.</p>
+                        <p class="text-xs text-slate-400">Crea o actualiza guías Markdown y sube archivos (PDFs, scripts, .pkt) directamente a tu repositorio sin usar Git local.</p>
                     </div>
 
                     <!-- ESTADO TOKEN -->
                     <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-5 space-y-3">
                         <div class="flex items-center justify-between">
                             <h3 class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <i class="fa-solid fa-key text-amber-500"></i> Token de acceso a GitHub
+                                <i class="fa-solid fa-key text-amber-500"></i> Token de Acceso a GitHub
                             </h3>
-                            ${ghToken ? '<span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold">TOKEN CONFIGURADO</span>' : '<span class="text-[10px] bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded font-mono font-bold">SIN TOKEN</span>'}
+                            ${ghToken ? '<span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold">TOKEN ACTIVO</span>' : '<span class="text-[10px] bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded font-mono font-bold">SIN TOKEN</span>'}
                         </div>
                         
                         ${!ghToken ? `
-                            <p class="text-xs text-slate-400 leading-relaxed">Para publicar archivos desde la web necesitas tu Personal Access Token (Fine-grained PAT) con permiso de escritura en <code>CASADOMOTICA</code>.</p>
+                            <p class="text-xs text-slate-400 leading-relaxed">Pega tu Fine-grained Personal Access Token con permiso <strong>Contents: Read and Write</strong> sobre <code>${appConfig.repo}</code>.</p>
                             <div class="flex gap-2">
                                 <input type="password" id="editor-token-input" placeholder="github_pat_11AAAAAA..." class="flex-1 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-xs font-mono">
                                 <button onclick="saveTokenFromEditor()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg transition">Guardar Token</button>
                             </div>
                         ` : `
                             <div class="flex items-center justify-between bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs font-mono">
-                                <span class="text-slate-400 truncate max-w-md">Token activo: •••••••••••••••••${ghToken.slice(-6)}</span>
-                                <button onclick="clearToken()" class="text-rose-400 hover:underline text-xs font-sans">Borrar token</button>
+                                <span class="text-slate-400 truncate max-w-md">Token guardado: •••••••••••••••••${ghToken.slice(-6)}</span>
+                                <button onclick="clearToken()" class="text-rose-400 hover:underline text-xs font-sans">Eliminar token</button>
                             </div>
                         `}
                     </div>
@@ -757,8 +894,10 @@
                             </div>
 
                             <div id="target-extra-box" class="hidden">
-                                <label class="block font-bold mb-1">Nombre del proyecto adicional</label>
-                                <input type="text" id="pub-extra-name" placeholder="ej: tunel-ssh o nas-casero" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100 font-mono">
+                                <label class="block font-bold mb-1">Proyecto Adicional</label>
+                                <select id="pub-extra-select" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100 font-mono">
+                                    ${appConfig.extras.map(e => `<option value="${e.folder}">${e.nombre} (./adicionales/${e.folder}/)</option>`).join('')}
+                                </select>
                             </div>
                         </div>
 
@@ -787,7 +926,7 @@
                             </div>
                             <div>
                                 <label class="block font-bold mb-1">Contenido Markdown / Pasos / Comandos</label>
-                                <textarea id="pub-md-content" rows="10" placeholder="Escribe aquí en formato Markdown...&#10;&#10;## 1. Instalación&#10;\`\`\`bash&#10;sudo apt update && sudo apt install openssh-server&#10;\`\`\`" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-3 font-mono text-slate-100"></textarea>
+                                <textarea id="pub-md-content" rows="10" placeholder="Escribe aquí en formato Markdown...&#10;&#10;## 1. Instalación&#10;sudo apt update &amp;&amp; sudo apt install openssh-server" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-3 font-mono text-slate-100"></textarea>
                             </div>
                         </div>
 
@@ -797,7 +936,7 @@
                                 <label class="block font-bold mb-1">Seleccionar archivo local</label>
                                 <input type="file" id="pub-file-input" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-slate-400">
                             </div>
-                            <p class="text-[11px] text-slate-400">El archivo se convertirá en Base64 y se subirá directamente a la carpeta seleccionada en GitHub.</p>
+                            <p class="text-[11px] text-slate-400">El archivo se codificará en Base64 y se subirá directamente a la carpeta seleccionada en GitHub.</p>
                         </div>
 
                         <div class="pt-4 border-t border-slate-200 dark:border-darkborder flex justify-end">
@@ -808,6 +947,11 @@
                     </div>
                 </div>
             `;
+        }
+
+        function setupEditorForm() {
+            toggleSectionOptions();
+            togglePubType();
         }
 
         function toggleSectionOptions() {
@@ -832,7 +976,7 @@
                     if (type === 'subject') {
                         document.getElementById('pub-subject-select').value = folder;
                     } else if (type === 'extra') {
-                        document.getElementById('pub-extra-name').value = folder;
+                        document.getElementById('pub-extra-select').value = folder;
                     }
                 }
             }, 100);
@@ -864,16 +1008,9 @@
             }
 
             const secType = document.getElementById('pub-section-type').value;
-            let folder = '';
-            if (secType === 'subject') {
-                folder = document.getElementById('pub-subject-select').value;
-            } else {
-                folder = document.getElementById('pub-extra-name').value.trim().toLowerCase().replace(/\s+/g, '-');
-                if (!folder) {
-                    showToast("Escribe el nombre del proyecto adicional.", "error");
-                    return;
-                }
-            }
+            let folder = secType === 'subject' 
+                ? document.getElementById('pub-subject-select').value 
+                : document.getElementById('pub-extra-select').value;
 
             const pubType = document.querySelector('input[name="pub_type"]:checked').value;
             const btn = document.getElementById('pub-submit-btn');
@@ -886,18 +1023,17 @@
                 const rawBody = document.getElementById('pub-md-content').value;
 
                 const fullMd = `# ${title}\n\n${rawBody}\n\n---\n*Publicado desde la web de CASADOMOTICA (2º ASIR).*`;
-                // Encode UTF-8 strings properly to Base64
                 const base64Content = btoa(unescape(encodeURIComponent(fullMd)));
 
                 const path = secType === 'subject' ? `asignaturas/${folder}/${fileName}` : `adicionales/${folder}/${fileName}`;
-                const success = await pushFileToGitHub(path, base64Content, `Añadir/Actualizar ${fileName} en ${folder}`);
+                const success = await pushFileToGitHub(path, base64Content, `Subir/Actualizar ${fileName} en ${folder}`);
 
                 btn.disabled = false;
                 btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Publicar en GitHub`;
 
                 if (success) {
                     showToast(`¡Archivo ${fileName} publicado con éxito!`, "success");
-                    showView(secType, secType === 'subject' ? getSubjectIdByFolder(folder) : folder);
+                    showView(secType, secType === 'subject' ? getSubjectIdByFolder(folder) : getExtraIdByFolder(folder));
                 }
             } else {
                 const fileInput = document.getElementById('pub-file-input');
@@ -923,7 +1059,7 @@
 
                     if (success) {
                         showToast(`¡Archivo ${file.name} subido con éxito!`, "success");
-                        showView(secType, secType === 'subject' ? getSubjectIdByFolder(folder) : folder);
+                        showView(secType, secType === 'subject' ? getSubjectIdByFolder(folder) : getExtraIdByFolder(folder));
                     }
                 };
 
@@ -937,30 +1073,46 @@
             }
         }
 
-        function getSubjectIdByFolder(folder) {
-            const found = appConfig.subjects.find(s => s.folder === folder);
-            return found ? found.id : folder;
-        }
-
         /* -------------------------------------------------------------------------- */
-        /*   VISTA 5: AJUSTES Y CONFIGURACIÓN                                        */
+        /*   VISTA 5: AJUSTES Y GESTIÓN DE CONFIGURACIÓN                             */
         /* -------------------------------------------------------------------------- */
         function renderSettingsHTML() {
             return `
                 <div class="space-y-6 animate-fade-in max-w-4xl">
                     <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-2">
                         <span class="px-2.5 py-1 bg-purple-500/10 text-purple-500 text-xs font-mono font-bold rounded-lg border border-purple-500/20">
-                            Ajustes Visuales & Módulos
+                            Configuración Global
                         </span>
-                        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Gestión de Asignaturas</h1>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Reordena o añade nuevas asignaturas de tu ciclo.</p>
+                        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Ajustes del Repositorio y Secciones</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Gestiona las asignaturas, proyectos adicionales y conexión a GitHub.</p>
                     </div>
 
+                    <!-- REPOSICION Y TOKEN -->
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-brands fa-github text-brand-500"></i> Repositorio de GitHub
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div>
+                                <label class="block font-bold mb-1">Usuario u Organización</label>
+                                <input type="text" id="cfg-owner" value="${appConfig.owner}" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 font-mono">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Nombre del Repositorio</label>
+                                <input type="text" id="cfg-repo" value="${appConfig.repo}" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 font-mono">
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button onclick="saveRepoConfig()" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl transition">Guardar Repositorio</button>
+                        </div>
+                    </div>
+
+                    <!-- GESTIÓN DE ASIGNATURAS -->
                     <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4">
                         <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Módulos Configurados (${appConfig.subjects.length})</h3>
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Asignaturas (${appConfig.subjects.length})</h3>
                             <button onclick="addNewSubjectPrompt()" class="px-3 py-1.5 bg-brand-600 text-white text-xs font-semibold rounded-lg hover:bg-brand-500 transition flex items-center gap-1">
-                                <i class="fa-plus"></i> Añadir Asignatura
+                                <i class="fa-solid fa-plus"></i> Añadir Asignatura
                             </button>
                         </div>
 
@@ -973,9 +1125,36 @@
                                         <span class="font-mono text-slate-400 text-[10px]">(${s.folder})</span>
                                     </div>
                                     <div class="flex items-center gap-1">
-                                        <button onclick="moveSubject(${idx}, -1)" class="p-1 hover:text-brand-400"><i class="fa-solid fa-arrow-up"></i></button>
-                                        <button onclick="moveSubject(${idx}, 1)" class="p-1 hover:text-brand-400"><i class="fa-solid fa-arrow-down"></i></button>
-                                        <button onclick="deleteSubject(${idx})" class="p-1 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button>
+                                        <button onclick="moveSubject(${idx}, -1)" class="p-1.5 hover:text-brand-400"><i class="fa-solid fa-arrow-up"></i></button>
+                                        <button onclick="moveSubject(${idx}, 1)" class="p-1.5 hover:text-brand-400"><i class="fa-solid fa-arrow-down"></i></button>
+                                        <button onclick="deleteSubject(${idx})" class="p-1.5 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- GESTIÓN DE ADICIONALES -->
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Adicionales & Homelab (${appConfig.extras.length})</h3>
+                            <button onclick="addNewExtraPrompt()" class="px-3 py-1.5 bg-amber-600 text-white text-xs font-semibold rounded-lg hover:bg-amber-500 transition flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> Añadir Proyecto
+                            </button>
+                        </div>
+
+                        <div class="space-y-2">
+                            ${appConfig.extras.map((e, idx) => `
+                                <div class="flex flex-wrap items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl gap-2 text-xs">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid ${e.icon || 'fa-terminal'} text-amber-500 w-4"></i>
+                                        <span class="font-semibold text-slate-800 dark:text-slate-200">${e.nombre}</span>
+                                        <span class="font-mono text-slate-400 text-[10px]">(${e.folder})</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <button onclick="moveExtra(${idx}, -1)" class="p-1.5 hover:text-amber-400"><i class="fa-solid fa-arrow-up"></i></button>
+                                        <button onclick="moveExtra(${idx}, 1)" class="p-1.5 hover:text-amber-400"><i class="fa-solid fa-arrow-down"></i></button>
+                                        <button onclick="deleteExtra(${idx})" class="p-1.5 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button>
                                     </div>
                                 </div>
                             `).join('')}
@@ -985,33 +1164,47 @@
             `;
         }
 
+        function saveRepoConfig() {
+            const owner = document.getElementById('cfg-owner').value.trim();
+            const repo = document.getElementById('cfg-repo').value.trim();
+            if (owner && repo) {
+                appConfig.owner = owner;
+                appConfig.repo = repo;
+                saveAppConfig(appConfig);
+                showToast("Configuración del repositorio guardada.", "success");
+                renderView('settings');
+            }
+        }
+
         function addNewSubjectPrompt() {
-            const code = prompt("Código del módulo (ej: ISO):");
+            const code = prompt("Código de la asignatura (ej: ASO):");
             if (!code) return;
             const name = prompt("Nombre completo:");
-            const folder = prompt("Nombre de carpeta en GitHub (ej: iso):");
+            const folder = prompt("Nombre de la carpeta en GitHub (ej: aso):");
 
-            appConfig.subjects.push({
-                id: folder.toLowerCase().replace(/\s+/g, '-'),
-                codigo: code.toUpperCase(),
-                nombre: name || code,
-                folder: folder.toLowerCase(),
-                icon: "fa-folder",
-                color: "brand",
-                desc: "Módulo añadido manualmente."
-            });
+            if (code && folder) {
+                appConfig.subjects.push({
+                    id: folder.toLowerCase().replace(/\s+/g, '-'),
+                    codigo: code.toUpperCase(),
+                    nombre: name || code,
+                    folder: folder.toLowerCase().replace(/\s+/g, '-'),
+                    icon: "fa-folder",
+                    color: "brand",
+                    desc: "Módulo añadido por el usuario."
+                });
 
-            saveAppConfig(appConfig);
-            renderView('settings');
-            showToast("Asignatura añadida a la vista local.", "success");
+                saveAppConfig(appConfig);
+                renderView('settings');
+                showToast("Asignatura añadida a la vista.", "success");
+            }
         }
 
         function deleteSubject(idx) {
-            customConfirm("Eliminar asignatura", "¿Seguro que deseas eliminar esta asignatura de la vista?", () => {
+            customConfirm("Eliminar asignatura", "¿Seguro que deseas eliminar esta asignatura de la lista?", () => {
                 appConfig.subjects.splice(idx, 1);
                 saveAppConfig(appConfig);
                 renderView('settings');
-                showToast("Asignatura eliminada de la vista.", "info");
+                showToast("Asignatura eliminada de la lista.", "info");
             });
         }
 
@@ -1025,10 +1218,105 @@
             renderView('settings');
         }
 
+        function addNewExtraPrompt() {
+            const name = prompt("Nombre del proyecto adicional (ej: Servidor Docker):");
+            if (!name) return;
+            const folder = prompt("Nombre de la carpeta en GitHub (ej: servidor-docker):");
+
+            if (name && folder) {
+                appConfig.extras.push({
+                    id: folder.toLowerCase().replace(/\s+/g, '-'),
+                    nombre: name,
+                    folder: folder.toLowerCase().replace(/\s+/g, '-'),
+                    icon: "fa-server",
+                    desc: "Proyecto adicional o Homelab."
+                });
+
+                saveAppConfig(appConfig);
+                renderView('settings');
+                showToast("Proyecto adicional añadido a la vista.", "success");
+            }
+        }
+
+        function deleteExtra(idx) {
+            customConfirm("Eliminar proyecto adicional", "¿Seguro que deseas eliminar este proyecto de la lista?", () => {
+                appConfig.extras.splice(idx, 1);
+                saveAppConfig(appConfig);
+                renderView('settings');
+                showToast("Proyecto eliminado.", "info");
+            });
+        }
+
+        function moveExtra(idx, dir) {
+            const newIdx = idx + dir;
+            if (newIdx < 0 || newIdx >= appConfig.extras.length) return;
+            const temp = appConfig.extras[idx];
+            appConfig.extras[idx] = appConfig.extras[newIdx];
+            appConfig.extras[newIdx] = temp;
+            saveAppConfig(appConfig);
+            renderView('settings');
+        }
+
         /* -------------------------------------------------------------------------- */
-        /*   COMPONENTES AUXILIARES                                                   */
+        /*   EDICIÓN Y BORRADO DE ARCHIVOS SUBIDOS                                   */
         /* -------------------------------------------------------------------------- */
-        function renderFilesGridHTML(data) {
+        async function openEditFileModal(filePath, sha, downloadUrl) {
+            const modal = document.getElementById('edit-file-modal');
+            document.getElementById('edit-modal-path').innerText = filePath;
+            document.getElementById('edit-modal-sha').value = sha;
+            document.getElementById('edit-modal-fullpath').value = filePath;
+            
+            const textarea = document.getElementById('edit-modal-body');
+            textarea.value = "Cargando contenido del archivo desde GitHub...";
+            modal.classList.remove('hidden');
+
+            const content = await fetchRawFileContent(downloadUrl);
+            textarea.value = content;
+        }
+
+        function closeEditFileModal() {
+            document.getElementById('edit-file-modal').classList.add('hidden');
+        }
+
+        async function submitEditFileUpdate() {
+            const path = document.getElementById('edit-modal-fullpath').value;
+            const sha = document.getElementById('edit-modal-sha').value;
+            const commitMessage = document.getElementById('edit-modal-commit').value.trim() || `Actualizar ${path}`;
+            const rawBody = document.getElementById('edit-modal-body').value;
+
+            const base64Content = btoa(unescape(encodeURIComponent(rawBody)));
+            
+            const btn = document.getElementById('edit-modal-submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Guardando...`;
+
+            const success = await pushFileToGitHub(path, base64Content, commitMessage, sha);
+            
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Guardar Cambios en GitHub`;
+
+            if (success) {
+                showToast("Archivo actualizado en GitHub con éxito.", "success");
+                closeEditFileModal();
+                refreshGitHubData();
+            }
+        }
+
+        function executeDeleteFile(path, sha, fileName) {
+            customConfirm("Eliminar archivo de GitHub", `¿Seguro que deseas eliminar "${fileName}" de GitHub?`, async () => {
+                showToast(`Eliminando ${fileName}...`, "info");
+                const success = await deleteFileFromGitHub(path, sha, `Eliminar ${fileName} desde web`);
+                if (success) {
+                    showToast(`Archivo "${fileName}" eliminado de GitHub.`, "success");
+                    refreshGitHubData();
+                }
+            });
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   GRID Y RENDERIZADO DE ARCHIVOS                                          */
+        /* -------------------------------------------------------------------------- */
+        function renderFilesGridHTML(data, currentFolder) {
             return `
                 <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4">
                     <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -1049,12 +1337,18 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex items-center gap-1.5 shrink-0">
+                                    <div class="flex items-center gap-1 shrink-0">
                                         ${!isDir && file.download_url ? `
-                                            <button onclick="openFilePreview('${file.name}', '${file.download_url}')" class="px-2 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded text-[11px] font-semibold transition">
+                                            <button onclick="openFilePreview('${file.name}', '${file.download_url}')" title="Ver" class="p-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded text-xs transition">
                                                 <i class="fa-regular fa-eye"></i>
                                             </button>
-                                            <a href="${file.download_url}" target="_blank" download class="px-2 py-1 bg-brand-600 hover:bg-brand-500 text-white rounded text-[11px] font-semibold transition">
+                                            <button onclick="openEditFileModal('${file.path}', '${file.sha}', '${file.download_url}')" title="Editar" class="p-1.5 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 rounded text-xs transition">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button onclick="executeDeleteFile('${file.path}', '${file.sha}', '${file.name}')" title="Eliminar" class="p-1.5 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 rounded text-xs transition">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                            <a href="${file.download_url}" target="_blank" download title="Descargar" class="p-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded text-xs transition">
                                                 <i class="fa-solid fa-download"></i>
                                             </a>
                                         ` : ''}
@@ -1075,7 +1369,7 @@
                         <span>Carpeta no encontrada en GitHub (./${path}/)</span>
                     </div>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Aún no se han publicado entregas en <strong><code>${path}</code></strong>. Puedes usar el botón superior <strong>"Publicar en esta asignatura"</strong> para subir la primera práctica.
+                        Aún no se han publicado archivos en <strong><code>${path}</code></strong>. Utiliza el botón <strong>"Publicar en esta asignatura"</strong> para crear la primera guía o subir tu primer archivo.
                     </p>
                 </div>
             `;
@@ -1100,7 +1394,7 @@
             titleEl.innerText = fileName;
             downloadBtn.href = downloadUrl;
             iconEl.className = getFileIcon(fileName) + " text-xl text-brand-500";
-            bodyEl.innerHTML = `<div class="text-center p-8"><i class="fa-solid fa-spinner fa-spin text-xl text-brand-500"></i><p class="mt-2">Cargando...</p></div>`;
+            bodyEl.innerHTML = `<div class="text-center p-8"><i class="fa-solid fa-spinner fa-spin text-xl text-brand-500"></i><p class="mt-2">Cargando contenido...</p></div>`;
 
             modal.classList.remove('hidden');
 
@@ -1134,6 +1428,16 @@
             return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
         }
 
+        function getSubjectIdByFolder(folder) {
+            const found = appConfig.subjects.find(s => s.folder === folder);
+            return found ? found.id : folder;
+        }
+
+        function getExtraIdByFolder(folder) {
+            const found = appConfig.extras.find(e => e.folder === folder);
+            return found ? found.id : folder;
+        }
+
         function setupSearch() {
             const input = document.getElementById('global-search');
             input.addEventListener('input', (e) => {
@@ -1142,16 +1446,24 @@
                     renderView(currentView, currentParam);
                     return;
                 }
-                const filtered = appConfig.subjects.filter(s => s.nombre.toLowerCase().includes(query) || s.codigo.toLowerCase().includes(query));
+                const filteredSubj = appConfig.subjects.filter(s => s.nombre.toLowerCase().includes(query) || s.codigo.toLowerCase().includes(query));
+                const filteredExt = appConfig.extras.filter(e => e.nombre.toLowerCase().includes(query));
+
                 const container = document.getElementById('app-content');
                 container.innerHTML = `
                     <div class="space-y-4">
-                        <h2 class="text-lg font-bold">Resultados para "${query}" (${filtered.length})</h2>
+                        <h2 class="text-lg font-bold">Resultados de búsqueda para "${query}"</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            ${filtered.map(s => `
+                            ${filteredSubj.map(s => `
                                 <div onclick="showView('subject', '${s.id}')" class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-xl p-4 cursor-pointer hover:border-brand-500">
                                     <div class="font-bold text-sm text-brand-500">${s.codigo} - ${s.nombre}</div>
                                     <div class="text-xs text-slate-400 mt-1">${s.desc}</div>
+                                </div>
+                            `).join('')}
+                            ${filteredExt.map(e => `
+                                <div onclick="showView('extra', '${e.id}')" class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-xl p-4 cursor-pointer hover:border-amber-500">
+                                    <div class="font-bold text-sm text-amber-500">${e.nombre}</div>
+                                    <div class="text-xs text-slate-400 mt-1">${e.desc}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -1192,7 +1504,7 @@
                 }
                 showToast("Copiado al portapapeles", "success");
             } catch (err) {
-                showToast("Error al copiar text", "error");
+                showToast("Error al copiar texto", "error");
             } finally {
                 document.body.removeChild(tempArea);
             }
@@ -1201,11 +1513,6 @@
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        function escapeJsString(str) {
-            if (!str) return '';
-            return str.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
         }
     </script>
 </body>
