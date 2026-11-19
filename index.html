@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CASADOMOTICA — Wiki & Repositorio 2.º ASIR</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Marked.js (Renderizador de Markdown) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfeff',
+                            100: '#cffaff',
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            700: '#0e7490',
+                            900: '#164e63',
+                        },
+                        darkbg: '#0b0f17',
+                        darkcard: '#131b2e',
+                        darkborder: '#1e293b'
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Personalización de barra de desplazamiento y estilos de Markdown */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0891b2; }
+
+        .markdown-body h1 { font-size: 1.75rem; font-weight: 800; margin-top: 1.25rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(226, 232, 240, 0.2); padding-bottom: 0.4rem; }
+        .markdown-body h2 { font-size: 1.35rem; font-weight: 700; margin-top: 1.1rem; margin-bottom: 0.5rem; }
+        .markdown-body h3 { font-size: 1.1rem; font-weight: 600; margin-top: 0.9rem; margin-bottom: 0.4rem; }
+        .markdown-body p { margin-bottom: 0.85rem; line-height: 1.6; font-size: 0.9rem; }
+        .markdown-body ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.85rem; font-size: 0.9rem; }
+        .markdown-body ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.85rem; font-size: 0.9rem; }
+        .markdown-body blockquote { border-left: 4px solid #06b6d4; padding-left: 1rem; color: #94a3b8; font-style: italic; margin-bottom: 0.85rem; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.85rem; }
+        .markdown-body th, .markdown-body td { border: 1px solid #334155; padding: 0.5rem 0.75rem; }
+        .markdown-body th { background-color: rgba(30, 41, 59, 0.8); }
+        .markdown-body code:not(pre code) { background-color: rgba(15, 23, 42, 0.6); padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.85em; color: #38bdf8; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-darkbg text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 flex flex-col font-sans">
+
+    <!-- HEADER FLOTANTE MÓVIL -->
+    <header class="lg:hidden bg-white dark:bg-darkcard border-b border-slate-200 dark:border-darkborder p-4 flex items-center justify-between sticky top-0 z-40 shadow-md">
+        <div class="flex items-center gap-3">
+            <button id="mobile-menu-btn" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+            <span class="font-extrabold tracking-wider text-brand-600 dark:text-brand-400 flex items-center gap-2">
+                <i class="fa-solid fa-server"></i> CASADOMOTICA
+            </span>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="refreshGitHubData()" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800" title="Recargar desde GitHub">
+                <i class="fa-solid fa-rotate-right"></i>
+            </button>
+            <button onclick="toggleTheme()" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <span class="dark:hidden"><i class="fa-solid fa-moon"></i></span>
+                <span class="hidden dark:inline"><i class="fa-solid fa-sun text-amber-400"></i></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 relative overflow-hidden">
+        
+        <!-- SIDEBAR / MENÚ LATERAL TIPO WIKI -->
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-white dark:bg-darkcard border-r border-slate-200 dark:border-darkborder transform -translate-x-full lg:translate-x-0 transition-transform duration-200 flex flex-col h-screen lg:h-auto shadow-xl lg:shadow-none">
+            
+            <!-- Header Sidebar -->
+            <div class="p-5 border-b border-slate-200 dark:border-darkborder flex items-center justify-between">
+                <div>
+                    <h1 class="font-black text-xl tracking-wider text-brand-600 dark:text-brand-400 flex items-center gap-2">
+                        <i class="fa-solid fa-network-wired text-brand-500"></i>
+                        CASADOMOTICA
+                    </h1>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Wiki & Repositorio 2.º ASIR • <span class="font-mono text-emerald-400">Deadpanzer12</span></p>
+                </div>
+                <button id="close-sidebar-btn" class="lg:hidden p-1.5 text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Buscador general -->
+            <div class="p-4">
+                <div class="relative">
+                    <input type="text" id="global-search" placeholder="Buscar práctica, PDF, script..." class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-slate-100 rounded-lg pl-8 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-3 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Lista Navegación -->
+            <nav class="flex-1 overflow-y-auto px-4 pb-6 space-y-5 text-xs">
+                <!-- Principal -->
+                <div>
+                    <button onclick="showView('dashboard')" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-target="dashboard">
+                        <i class="fa-solid fa-house text-brand-500 w-4 text-center"></i>
+                        Inicio / Dashboard
+                    </button>
+                </div>
+
+                <!-- Asignaturas -->
+                <div>
+                    <div class="flex items-center justify-between px-3 mb-2">
+                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Asignaturas (10 Módulos)</h3>
+                        <button onclick="showView('settings')" title="Gestionar asignaturas" class="text-[10px] text-brand-500 hover:underline">Configurar</button>
+                    </div>
+                    <div class="space-y-1" id="sidebar-subjects-list">
+                        <!-- Cargado dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Adicionales / Homelab -->
+                <div>
+                    <div class="flex items-center justify-between px-3 mb-2">
+                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Adicionales & Homelab</h3>
+                        <span class="text-[10px] bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded font-mono">auto</span>
+                    </div>
+                    <div class="space-y-1" id="sidebar-extras-list">
+                        <!-- Cargado dinámicamente desde carpeta adicionales/ -->
+                    </div>
+                </div>
+
+                <!-- Herramientas y Ajustes -->
+                <div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">Herramientas</h3>
+                    <div class="space-y-1">
+                        <button onclick="showView('generator')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-target="generator">
+                            <i class="fa-solid fa-file-pen text-emerald-500 w-4 text-center"></i>
+                            Generar README.md
+                        </button>
+                        <button onclick="showView('settings')" class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-target="settings">
+                            <i class="fa-solid fa-sliders text-purple-500 w-4 text-center"></i>
+                            Ajustes & Token GitHub
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Footer Sidebar -->
+            <div class="p-4 border-t border-slate-200 dark:border-darkborder text-[11px] text-slate-500 flex items-center justify-between">
+                <button onclick="refreshGitHubData()" class="flex items-center gap-1.5 text-brand-500 hover:underline">
+                    <i class="fa-solid fa-arrows-rotate"></i> Recargar API
+                </button>
+                <button onclick="toggleTheme()" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <span class="dark:hidden"><i class="fa-solid fa-moon"></i> Oscuro</span>
+                    <span class="hidden dark:inline"><i class="fa-solid fa-sun text-amber-400"></i> Claro</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8 max-w-7xl mx-auto w-full">
+            <div id="app-content">
+                <!-- Se renderiza dinámicamente -->
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL DE VISUALIZACIÓN DE ARCHIVOS / PREVIEW -->
+    <div id="file-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl max-w-4xl w-full p-6 space-y-4 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-darkborder pb-3">
+                <div class="flex items-center gap-3 truncate">
+                    <span id="modal-file-icon" class="text-xl text-brand-500"></span>
+                    <h3 id="modal-file-title" class="text-base font-bold text-slate-900 dark:text-white truncate font-mono">---</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a id="modal-file-download" href="#" target="_blank" download class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-download"></i> Descargar
+                    </a>
+                    <button onclick="closeFileModal()" class="text-slate-400 hover:text-white p-1">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="modal-file-body" class="flex-1 overflow-y-auto bg-slate-950 rounded-xl p-4 font-mono text-xs text-slate-200">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL DE LA APLICACIÓN -->
+    <script>
+        /* -------------------------------------------------------------------------- */
+        /*   CONFIGURACIÓN DE USUARIO & ASIGNATURAS DEFAULT (2.º ASIR)                */
+        /* -------------------------------------------------------------------------- */
+        const GITHUB_OWNER = "Deadpanzer12";
+        const GITHUB_REPO = "CASADOMOTICA";
+
+        const DEFAULT_SUBJECTS = [
+            { id: "aso", codigo: "ASO", nombre: "Administración de Sistemas Operativos", folder: "aso", icon: "fa-laptop-code", color: "sky", desc: "Linux/Windows Server, automatización con Bash/PowerShell y administración." },
+            { id: "digitalizacion", codigo: "DIG", nombre: "Digitalización", folder: "digitalizacion", icon: "fa-cloud-arrow-up", color: "indigo", desc: "Transformación digital, metodologías ágiles y entornos Cloud Native." },
+            { id: "sgea", codigo: "SGEA", nombre: "Sistemas De Gestión Empresariales Actuales", folder: "sgea", icon: "fa-boxes-stacked", color: "purple", desc: "Implantación, desarrollo de módulos y configuración de ERPs (Odoo)." },
+            { id: "iaw", codigo: "IAW", nombre: "Implantación de aplicaciones WEB", folder: "iaw", icon: "fa-globe", color: "emerald", desc: "Servidores web Nginx/Apache, pilas LAMP/LEMP, HTTPS y PHP." },
+            { id: "ip2", codigo: "IP2", nombre: "IP2 (Iniciativa y Proyecto 2)", folder: "ip2", icon: "fa-diagram-project", color: "amber", desc: "Proyecto integrador de infraestructuras y domótica CASADOMOTICA." },
+            { id: "redes", codigo: "RED", nombre: "Redes", folder: "redes", icon: "fa-network-wired", color: "blue", desc: "Enrutamiento OSPF, VLANs, switching L3 y Packet Tracer." },
+            { id: "sad", codigo: "SAD", nombre: "Seguridad y Alta Disponibilidad", folder: "sad", icon: "fa-shield-halved", color: "rose", desc: "Firewalls, SSL/TLS, hardening SSH, Fail2ban y clústeres HA." },
+            { id: "nube", codigo: "NUBE", nombre: "Servicios en la nube", folder: "nube", icon: "fa-cloud", color: "teal", desc: "Despliegues Cloud (AWS, Azure), IaaC con Terraform y Docker." },
+            { id: "sgbd", codigo: "SGBD", nombre: "Sistemas Gestores de Bases de Datos", folder: "sgbd", icon: "fa-database", color: "cyan", desc: "Administración de MariaDB/PostgreSQL, réplicas y copias de seguridad." },
+            { id: "sostenibilidad", codigo: "SOST", nombre: "Sostenibilidad", folder: "sostenibilidad", icon: "fa-leaf", color: "green", desc: "Green IT, cálculo del PUE en Datacenters y eficiencia energética." }
+        ];
+
+        // Estado global de la aplicación
+        let appConfig = loadAppConfig();
+        let ghToken = localStorage.getItem('casadomotica_gh_token') || '';
+        let githubCache = {}; // Caché temporal para no agotar la API de GitHub
+        let currentView = 'dashboard';
+        let currentParam = null;
+
+        window.onload = function() {
+            initSidebar();
+            renderView('dashboard');
+            setupSearch();
+            fetchRemoteConfig(); // Intentar cargar config.json del repo si existe
+        };
+
+        function loadAppConfig() {
+            const saved = localStorage.getItem('casadomotica_config');
+            if (saved) {
+                try { return JSON.parse(saved); } catch(e) {}
+            }
+            return { subjects: DEFAULT_SUBJECTS };
+        }
+
+        function saveAppConfig(cfg) {
+            appConfig = cfg;
+            localStorage.setItem('casadomotica_config', JSON.stringify(cfg));
+            initSidebar();
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   CONEXIÓN A LA API DE GITHUB EN TIEMPO REAL                               */
+        /* -------------------------------------------------------------------------- */
+        async function fetchGitHubContents(path = '') {
+            const cacheKey = `gh_contents_${path}`;
+            if (githubCache[cacheKey]) return githubCache[cacheKey];
+
+            const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+            const headers = { 'Accept': 'application/vnd.github.v3+json' };
+            if (ghToken) headers['Authorization'] = `token ${ghToken}`;
+
+            try {
+                const res = await fetch(url, { headers });
+                if (res.status === 404) {
+                    return { error: '404', message: 'Carpeta no encontrada en GitHub' };
+                }
+                if (res.status === 403) {
+                    return { error: '403', message: 'Límite de API de GitHub alcanzado (60 peticiones/hora). Introduce un Personal Token en Ajustes.' };
+                }
+                if (!res.ok) {
+                    return { error: res.status, message: `Error HTTP ${res.status}` };
+                }
+                const data = await res.json();
+                githubCache[cacheKey] = data;
+                return data;
+            } catch (err) {
+                return { error: 'network', message: 'Error de conexión con la API de GitHub' };
+            }
+        }
+
+        async function fetchRawFileContent(downloadUrl) {
+            try {
+                const res = await fetch(downloadUrl);
+                if (!res.ok) return 'Error al descargar el contenido del archivo.';
+                return await res.text();
+            } catch(e) {
+                return 'Error de red al cargar el archivo.';
+            }
+        }
+
+        async function fetchRemoteConfig() {
+            // Intentar leer config.json de la raíz si el usuario decide sincronizarlo
+            const res = await fetchGitHubContents('config.json');
+            if (Array.isArray(res) || res.download_url) {
+                const targetUrl = res.download_url || res[0]?.download_url;
+                if (targetUrl) {
+                    try {
+                        const raw = await fetchRawFileContent(targetUrl);
+                        const parsed = JSON.parse(raw);
+                        if (parsed && parsed.subjects) {
+                            saveAppConfig(parsed);
+                        }
+                    } catch(e) {}
+                }
+            }
+        }
+
+        function refreshGitHubData() {
+            githubCache = {};
+            renderView(currentView, currentParam);
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   BARRA LATERAL Y NAVEGACIÓN                                               */
+        /* -------------------------------------------------------------------------- */
+        function initSidebar() {
+            const subjContainer = document.getElementById('sidebar-subjects-list');
+            subjContainer.innerHTML = appConfig.subjects.map(asig => `
+                <button onclick="showView('subject', '${asig.id}')" class="nav-item w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-target="subject-${asig.id}">
+                    <span class="flex items-center gap-2 truncate">
+                        <i class="fa-solid ${asig.icon || 'fa-folder'} text-${asig.color || 'brand'}-500 w-4 text-center"></i>
+                        <span class="truncate">${asig.codigo}</span>
+                    </span>
+                    <span class="text-[9px] bg-slate-200 dark:bg-slate-800 text-slate-500 px-1.5 py-0.5 rounded font-mono">${asig.folder}</span>
+                </button>
+            `).join('');
+
+            // Cargar proyectos de adicionales dinámicamente desde GitHub
+            loadSidebarExtras();
+
+            // Control de menú en móviles
+            const sidebar = document.getElementById('sidebar');
+            document.getElementById('mobile-menu-btn').onclick = () => sidebar.classList.remove('-translate-x-full');
+            document.getElementById('close-sidebar-btn').onclick = () => sidebar.classList.add('-translate-x-full');
+        }
+
+        async function loadSidebarExtras() {
+            const extraContainer = document.getElementById('sidebar-extras-list');
+            extraContainer.innerHTML = `<span class="text-[11px] text-slate-500 px-3 flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Cargando...</span>`;
+            
+            const contents = await fetchGitHubContents('adicionales');
+            
+            if (Array.isArray(contents)) {
+                const subfolders = contents.filter(item => item.type === 'dir');
+                if (subfolders.length === 0) {
+                    extraContainer.innerHTML = `<span class="text-[11px] text-slate-500 px-3">Subcarpetas vacías</span>`;
+                } else {
+                    extraContainer.innerHTML = subfolders.map(sub => `
+                        <button onclick="showView('extra', '${sub.name}')" class="nav-item w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors truncate" data-target="extra-${sub.name}">
+                            <i class="fa-solid fa-folder-open text-amber-500 w-4 text-center"></i>
+                            <span class="truncate capitalize">${sub.name.replace(/-/g, ' ')}</span>
+                        </button>
+                    `).join('');
+                }
+            } else {
+                // Fallback amigable si aún no se ha creado la carpeta adicionales/ en GitHub
+                extraContainer.innerHTML = `
+                    <button onclick="showView('extra', 'tunel-ssh')" class="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i class="fa-solid fa-terminal text-amber-500 w-4 text-center"></i>
+                        <span class="truncate">Túnel SSH Remoto</span>
+                    </button>
+                    <button onclick="showView('extra', 'nas-casero')" class="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i class="fa-solid fa-hard-drive text-amber-500 w-4 text-center"></i>
+                        <span class="truncate">NAS Casero RAID 5</span>
+                    </button>
+                `;
+            }
+        }
+
+        function showView(view, param = null) {
+            currentView = view;
+            currentParam = param;
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            renderView(view, param);
+        }
+
+        function renderView(view, param) {
+            const container = document.getElementById('app-content');
+            if (view === 'dashboard') {
+                container.innerHTML = renderDashboardHTML();
+            } else if (view === 'subject') {
+                const asig = appConfig.subjects.find(a => a.id === param);
+                renderSubjectView(asig, container);
+            } else if (view === 'extra') {
+                renderExtraView(param, container);
+            } else if (view === 'generator') {
+                container.innerHTML = renderReadmeGeneratorHTML();
+            } else if (view === 'settings') {
+                container.innerHTML = renderSettingsHTML();
+            }
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   VISTA 1: DASHBOARD / INICIO                                             */
+        /* -------------------------------------------------------------------------- */
+        function renderDashboardHTML() {
+            return `
+                <div class="space-y-8 animate-fade-in">
+                    <!-- HERO BANNER -->
+                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 via-slate-900 to-darkcard border border-brand-500/20 p-6 md:p-10 text-white shadow-2xl">
+                        <div class="relative z-10 space-y-4 max-w-3xl">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-mono">
+                                <i class="fa-brands fa-github"></i>
+                                <span>Deadpanzer12 / CASADOMOTICA</span>
+                            </div>
+                            <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
+                                Repositorio & Wiki <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-400">2.º ASIR</span>
+                            </h1>
+                            <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
+                                Plataforma de documentación técnica en vivo. Conectada directamente a la API de GitHub para explorar tus carpetas de asignaturas, scripts (.sh), laboratorios y proyectos Homelab sin tocar HTML.
+                            </p>
+                            <div class="flex flex-wrap gap-3 pt-2">
+                                <button onclick="showView('generator')" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-xl transition shadow-lg flex items-center gap-2">
+                                    <i class="fa-solid fa-plus"></i> Crear nuevo README.md
+                                </button>
+                                <a href="https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}" target="_blank" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-2">
+                                    <i class="fa-brands fa-github text-brand-400"></i> Abrir en GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GRID DE 10 ASIGNATURAS -->
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i class="fa-solid fa-graduation-cap text-brand-500"></i>
+                                Módulos del Ciclo (10 Asignaturas)
+                            </h2>
+                            <button onclick="showView('settings')" class="text-xs text-brand-500 hover:underline">Personalizar lista</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${appConfig.subjects.map(asig => `
+                                <div onclick="showView('subject', '${asig.id}')" class="group bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder hover:border-brand-500/50 rounded-2xl p-5 transition-all duration-200 shadow-sm hover:shadow-xl cursor-pointer flex flex-col justify-between">
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="px-2.5 py-1 bg-${asig.color || 'brand'}-500/10 text-${asig.color || 'brand'}-500 font-mono text-xs font-bold rounded-lg border border-${asig.color || 'brand'}-500/20">
+                                                ${asig.codigo}
+                                            </span>
+                                            <span class="text-[11px] font-mono text-slate-400 flex items-center gap-1">
+                                                <i class="fa-regular fa-folder"></i> ./asignaturas/${asig.folder}/
+                                            </span>
+                                        </div>
+                                        <h3 class="font-bold text-base text-slate-900 dark:text-white group-hover:text-brand-500 transition-colors flex items-center gap-2">
+                                            <i class="fa-solid ${asig.icon || 'fa-folder'} text-${asig.color || 'brand'}-500 text-sm"></i>
+                                            ${asig.nombre}
+                                        </h3>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                            ${asig.desc}
+                                        </p>
+                                    </div>
+
+                                    <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-brand-600 dark:text-brand-400">
+                                        <span>Explorar archivos de GitHub</span>
+                                        <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   VISTA 2: EXPLORADOR DE ASIGNATURA EN TIEMPO REAL                         */
+        /* -------------------------------------------------------------------------- */
+        async function renderSubjectView(asig, container) {
+            if (!asig) {
+                container.innerHTML = `<div class="p-4">Asignatura no encontrada.</div>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="space-y-6 animate-fade-in">
+                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                        <button onclick="showView('dashboard')" class="hover:text-brand-500">Inicio</button>
+                        <span>/</span>
+                        <span class="text-slate-900 dark:text-slate-200 font-semibold">${asig.nombre}</span>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="px-3 py-1 bg-brand-500/10 text-brand-500 font-mono text-xs font-bold rounded-lg border border-brand-500/20">
+                                Ruta en GitHub: ./asignaturas/${asig.folder}/
+                            </span>
+                            <a href="https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/tree/main/asignaturas/${asig.folder}" target="_blank" class="text-xs text-brand-400 hover:underline flex items-center gap-1">
+                                <i class="fa-brands fa-github"></i> Abrir carpeta en GitHub
+                            </a>
+                        </div>
+                        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-3">
+                            <i class="fa-solid ${asig.icon || 'fa-folder'} text-${asig.color || 'brand'}-500"></i>
+                            ${asig.nombre}
+                        </h1>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs md:text-sm">${asig.desc}</p>
+                    </div>
+
+                    <div id="subject-github-content" class="space-y-6">
+                        <div class="p-8 text-center text-slate-400 font-mono text-xs">
+                            <i class="fa-solid fa-spinner fa-spin text-xl mb-2 text-brand-500"></i>
+                            <p>Consultando la API de GitHub para ./asignaturas/${asig.folder}/...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const githubContent = document.getElementById('subject-github-content');
+            const data = await fetchGitHubContents(`asignaturas/${asig.folder}`);
+
+            if (data.error) {
+                githubContent.innerHTML = renderGitHubErrorHTML(`asignaturas/${asig.folder}`);
+                return;
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                githubContent.innerHTML = renderEmptyFolderHTML(`asignaturas/${asig.folder}`);
+                return;
+            }
+
+            // Buscar si hay algún README.md o .md para renderizar primero
+            const mdFile = data.find(f => f.name.toLowerCase().endsWith('.md'));
+            let mdHTML = '';
+            if (mdFile && mdFile.download_url) {
+                const rawMd = await fetchRawFileContent(mdFile.download_url);
+                mdHTML = `
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4 shadow-sm">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-darkborder pb-3">
+                            <span class="text-xs font-mono font-bold text-brand-500 flex items-center gap-2">
+                                <i class="fa-solid fa-book-open"></i> ${mdFile.name} (Documentación de la práctica)
+                            </span>
+                            <button onclick="copyText(\`${escapeJsString(rawMd)}\`, this)" class="text-xs text-slate-400 hover:text-white flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i> Copiar Markdown
+                            </button>
+                        </div>
+                        <div class="markdown-body text-slate-800 dark:text-slate-200">
+                            ${marked.parse(rawMd)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Renderizar lista de archivos subidos
+            const filesListHTML = `
+                <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-file-code text-brand-500"></i>
+                        Archivos y entregas en esta carpeta (${data.length})
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${data.map(file => {
+                            const iconClass = getFileIcon(file.name);
+                            const isDir = file.type === 'dir';
+                            return `
+                                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-brand-500/40 transition">
+                                    <div class="flex items-center gap-3 truncate">
+                                        <i class="${iconClass} text-base w-5 text-center"></i>
+                                        <div class="truncate">
+                                            <div class="text-xs font-bold text-slate-800 dark:text-slate-200 font-mono truncate">${file.name}</div>
+                                            <div class="text-[10px] text-slate-400 font-mono">${isDir ? 'Carpeta' : formatBytes(file.size)}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-1.5 shrink-0">
+                                        ${!isDir && file.download_url ? `
+                                            <button onclick="openFilePreview('${file.name}', '${file.download_url}')" class="px-2 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded text-[11px] font-semibold transition" title="Previsualizar">
+                                                <i class="fa-regular fa-eye"></i>
+                                            </button>
+                                            <a href="${file.download_url}" target="_blank" download class="px-2 py-1 bg-brand-600 hover:bg-brand-500 text-white rounded text-[11px] font-semibold transition" title="Descargar">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+
+            githubContent.innerHTML = mdHTML + filesListHTML;
+            setupCodeCopyButtons();
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   VISTA 3: DETALLE DE PROYECTOS ADICIONALES & HOMELAB                      */
+        /* -------------------------------------------------------------------------- */
+        async function renderExtraView(subfolderName, container) {
+            container.innerHTML = `
+                <div class="space-y-6 animate-fade-in">
+                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                        <button onclick="showView('dashboard')" class="hover:text-brand-500">Inicio</button>
+                        <span>/</span>
+                        <span class="text-amber-500 font-semibold">Adicionales / ${subfolderName}</span>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-amber-950/30 to-darkcard border border-amber-500/20 rounded-2xl p-6 space-y-2">
+                        <span class="px-2.5 py-1 bg-amber-500/10 text-amber-500 text-[11px] font-mono font-bold rounded-lg border border-amber-500/20">
+                            ./adicionales/${subfolderName}/
+                        </span>
+                        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white capitalize">${subfolderName.replace(/-/g, ' ')}</h1>
+                        <p class="text-slate-400 text-xs">Laboratorio y proyectos extra para Homelab.</p>
+                    </div>
+
+                    <div id="extra-github-content" class="space-y-6">
+                        <div class="p-8 text-center text-slate-400 font-mono text-xs">
+                            <i class="fa-solid fa-spinner fa-spin text-xl mb-2 text-amber-500"></i>
+                            <p>Consultando la API de GitHub para ./adicionales/${subfolderName}...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const githubContent = document.getElementById('extra-github-content');
+            const data = await fetchGitHubContents(`adicionales/${subfolderName}`);
+
+            if (data.error) {
+                githubContent.innerHTML = renderGitHubErrorHTML(`adicionales/${subfolderName}`);
+                return;
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                githubContent.innerHTML = renderEmptyFolderHTML(`adicionales/${subfolderName}`);
+                return;
+            }
+
+            const mdFile = data.find(f => f.name.toLowerCase().endsWith('.md'));
+            let mdHTML = '';
+            if (mdFile && mdFile.download_url) {
+                const rawMd = await fetchRawFileContent(mdFile.download_url);
+                mdHTML = `
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4 shadow-sm">
+                        <div class="markdown-body text-slate-800 dark:text-slate-200">
+                            ${marked.parse(rawMd)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            const filesListHTML = `
+                <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-folder-tree text-amber-500"></i>
+                        Archivos del proyecto (${data.length})
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${data.map(file => `
+                            <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl">
+                                <div class="flex items-center gap-3 truncate">
+                                    <i class="${getFileIcon(file.name)} text-base w-5 text-center"></i>
+                                    <span class="text-xs font-bold font-mono truncate">${file.name}</span>
+                                </div>
+                                ${file.download_url ? `
+                                    <button onclick="openFilePreview('${file.name}', '${file.download_url}')" class="px-2.5 py-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 rounded text-xs font-semibold">
+                                        Ver / Descargar
+                                    </button>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            githubContent.innerHTML = mdHTML + filesListHTML;
+            setupCodeCopyButtons();
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   VISTA 4: GENERADOR VISUAL DE README.MD                                   */
+        /* -------------------------------------------------------------------------- */
+        function renderReadmeGeneratorHTML() {
+            return `
+                <div class="space-y-6 animate-fade-in max-w-4xl">
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-2">
+                        <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-500 text-xs font-mono font-bold rounded-lg border border-emerald-500/20">
+                            Herramienta Visual
+                        </span>
+                        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Generador de Documentación README.md</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Rellena los pasos de tu práctica para generar el archivo Markdown perfecto y subirlo directamente a GitHub.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div>
+                                <label class="block font-bold mb-1">Título de la Práctica / Proyecto</label>
+                                <input type="text" id="gen-title" placeholder="Ej: Práctica 2 - Servidor Web Nginx con SSL" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100" oninput="updateReadmePreview()">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Asignatura / Módulo</label>
+                                <input type="text" id="gen-subject" placeholder="Ej: IAW - Implantación de Aplicaciones Web" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100" oninput="updateReadmePreview()">
+                            </div>
+                        </div>
+
+                        <div class="text-xs">
+                            <label class="block font-bold mb-1">Resumen / Objetivos</label>
+                            <textarea id="gen-desc" rows="2" placeholder="Explicación breve de lo que se ha realizado en esta entrega..." class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100" oninput="updateReadmePreview()"></textarea>
+                        </div>
+
+                        <div class="text-xs">
+                            <label class="block font-bold mb-1">Comandos / Código principal de la práctica</label>
+                            <textarea id="gen-code" rows="4" placeholder="sudo apt update&#10;sudo apt install nginx -y&#10;sudo systemctl status nginx" class="font-mono w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100" oninput="updateReadmePreview()"></textarea>
+                        </div>
+
+                        <div class="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-darkborder">
+                            <button onclick="downloadGeneratedReadme()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl flex items-center gap-2 transition">
+                                <i class="fa-solid fa-download"></i> Descargar README.md
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PREVIEW EN VIVO -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-3">
+                        <h3 class="text-xs font-mono text-slate-400 border-b border-slate-800 pb-2">Vista previa en tiempo real:</h3>
+                        <div id="gen-preview" class="markdown-body text-slate-200 text-xs">
+                            <!-- Se actualiza por JS -->
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateReadmePreview() {
+            const title = document.getElementById('gen-title')?.value || 'Título de la Práctica';
+            const subject = document.getElementById('gen-subject')?.value || 'Asignatura ASIR';
+            const desc = document.getElementById('gen-desc')?.value || 'Descripción del trabajo realizado...';
+            const code = document.getElementById('gen-code')?.value || '# Escribe aquí tus comandos';
+
+            const mdContent = `# ${title}\n**Módulo:** ${subject}\n\n## 📝 Descripción\n${desc}\n\n## 🚀 Comandos y Pasos\n\`\`\`bash\n${code}\n\`\`\`\n\n---\n*Documentación generada para el repositorio CASADOMOTICA (2º ASIR).*`;
+            
+            const previewEl = document.getElementById('gen-preview');
+            if (previewEl) previewEl.innerHTML = marked.parse(mdContent);
+        }
+
+        function downloadGeneratedReadme() {
+            const title = document.getElementById('gen-title')?.value || 'Práctica';
+            const subject = document.getElementById('gen-subject')?.value || 'ASIR';
+            const desc = document.getElementById('gen-desc')?.value || 'Descripción...';
+            const code = document.getElementById('gen-code')?.value || '';
+
+            const mdContent = `# ${title}\n**Módulo:** ${subject}\n\n## 📝 Descripción\n${desc}\n\n## 🚀 Comandos y Pasos\n\`\`\`bash\n${code}\n\`\`\`\n\n---\n*Documentación generada para el repositorio CASADOMOTICA (2º ASIR).*`;
+
+            const blob = new Blob([mdContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'README.md';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   VISTA 5: AJUSTES Y GESTIÓN DE CONFIGURACIÓN                             */
+        /* -------------------------------------------------------------------------- */
+        function renderSettingsHTML() {
+            return `
+                <div class="space-y-6 animate-fade-in max-w-4xl">
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-2">
+                        <span class="px-2.5 py-1 bg-purple-500/10 text-purple-500 text-xs font-mono font-bold rounded-lg border border-purple-500/20">
+                            Configuración del Sistema
+                        </span>
+                        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Ajustes del Repositorio</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Personaliza tus asignaturas, tokens de API o sincronización.</p>
+                    </div>
+
+                    <!-- GITHUB ACCESS TOKEN -->
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-3">
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-key text-amber-500"></i> GitHub Personal Access Token (Opcional)
+                        </h3>
+                        <p class="text-xs text-slate-500">Si haces muchas consultas, GitHub limita las peticiones públicas a 60/hora. Puedes pegar aquí un token clásico de GitHub (read-only) para peticiones ilimitadas.</p>
+                        <div class="flex gap-2">
+                            <input type="password" id="gh-token-input" value="${ghToken}" placeholder="ghp_xxxxxxxxxxxx" class="flex-1 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-2 text-xs font-mono">
+                            <button onclick="saveToken()" class="px-4 py-2 bg-brand-600 text-white font-semibold text-xs rounded-lg hover:bg-brand-500 transition">Guardar Token</button>
+                        </div>
+                    </div>
+
+                    <!-- GESTIÓN DE ASIGNATURAS -->
+                    <div class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Lista de Asignaturas (${appConfig.subjects.length})</h3>
+                            <button onclick="addNewSubjectPrompt()" class="px-3 py-1.5 bg-brand-600 text-white text-xs font-semibold rounded-lg hover:bg-brand-500 transition flex items-center gap-1">
+                                <i class="fa-plus"></i> Añadir Asignatura
+                            </button>
+                        </div>
+
+                        <div class="space-y-2">
+                            ${appConfig.subjects.map((s, idx) => `
+                                <div class="flex flex-wrap items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl gap-2 text-xs">
+                                    <div class="flex items-center gap-3">
+                                        <span class="font-mono font-bold text-brand-500 w-12">${s.codigo}</span>
+                                        <span class="font-semibold text-slate-800 dark:text-slate-200">${s.nombre}</span>
+                                        <span class="font-mono text-slate-400 text-[10px]">(${s.folder})</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <button onclick="moveSubject(${idx}, -1)" class="p-1 hover:text-brand-400"><i class="fa-arrow-up"></i></button>
+                                        <button onclick="moveSubject(${idx}, 1)" class="p-1 hover:text-brand-400"><i class="fa-arrow-down"></i></button>
+                                        <button onclick="deleteSubject(${idx})" class="p-1 hover:text-rose-400"><i class="fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-200 dark:border-darkborder flex justify-end gap-2">
+                            <button onclick="exportConfigJson()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-2">
+                                <i class="fa-download"></i> Descargar config.json
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function saveToken() {
+            const input = document.getElementById('gh-token-input');
+            if (input) {
+                ghToken = input.value.trim();
+                localStorage.setItem('casadomotica_gh_token', ghToken);
+                alert('Token guardado correctamente.');
+                refreshGitHubData();
+            }
+        }
+
+        function addNewSubjectPrompt() {
+            const codigo = prompt("Código asignatura (ej: ISO):");
+            if (!codigo) return;
+            const nombre = prompt("Nombre completo:");
+            const folder = prompt("Nombre de carpeta en GitHub (ej: iso):");
+            
+            appConfig.subjects.push({
+                id: folder.toLowerCase().replace(/\s+/g, '-'),
+                codigo: codigo.toUpperCase(),
+                nombre: nombre || codigo,
+                folder: folder.toLowerCase(),
+                icon: "fa-folder",
+                color: "brand",
+                desc: "Módulo añadido manualmente."
+            });
+
+            saveAppConfig(appConfig);
+            renderView('settings');
+        }
+
+        function deleteSubject(idx) {
+            if (confirm("¿Seguro que deseas eliminar esta asignatura de la lista?")) {
+                appConfig.subjects.splice(idx, 1);
+                saveAppConfig(appConfig);
+                renderView('settings');
+            }
+        }
+
+        function moveSubject(idx, dir) {
+            const newIdx = idx + dir;
+            if (newIdx < 0 || newIdx >= appConfig.subjects.length) return;
+            const temp = appConfig.subjects[idx];
+            appConfig.subjects[idx] = appConfig.subjects[newIdx];
+            appConfig.subjects[newIdx] = temp;
+            saveAppConfig(appConfig);
+            renderView('settings');
+        }
+
+        function exportConfigJson() {
+            const blob = new Blob([JSON.stringify(appConfig, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   COMPONENTES REUTILIZABLES HTML                                           */
+        /* -------------------------------------------------------------------------- */
+        function renderGitHubErrorHTML(path) {
+            return `
+                <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 text-slate-300 space-y-3">
+                    <div class="flex items-center gap-3 text-amber-500 font-bold text-sm">
+                        <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                        <span>Carpeta no encontrada en GitHub (./${path}/)</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Para que esta sección muestre tus documentos, crea la carpeta <strong><code>${path}</code></strong> en tu ordenador, pon dentro tus archivos (o un <code>README.md</code>) y súbela a GitHub mediante el botón <strong>Add file > Upload files</strong>.
+                    </p>
+                </div>
+            `;
+        }
+
+        function renderEmptyFolderHTML(path) {
+            return `
+                <div class="bg-white dark:bg-darkcard border border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 text-center space-y-2">
+                    <i class="fa-regular fa-folder-open text-3xl text-slate-400"></i>
+                    <p class="text-xs text-slate-400">La carpeta <code>${path}</code> existe en GitHub pero aún no contiene archivos.</p>
+                </div>
+            `;
+        }
+
+        async function openFilePreview(fileName, downloadUrl) {
+            const modal = document.getElementById('file-modal');
+            const titleEl = document.getElementById('modal-file-title');
+            const bodyEl = document.getElementById('modal-file-body');
+            const iconEl = document.getElementById('modal-file-icon');
+            const downloadBtn = document.getElementById('modal-file-download');
+
+            titleEl.innerText = fileName;
+            downloadBtn.href = downloadUrl;
+            iconEl.className = getFileIcon(fileName) + " text-xl text-brand-500";
+            bodyEl.innerHTML = `<div class="text-center p-8"><i class="fa-solid fa-spinner fa-spin text-xl text-brand-500"></i><p class="mt-2">Cargando vista previa...</p></div>`;
+
+            modal.classList.remove('hidden');
+
+            const content = await fetchRawFileContent(downloadUrl);
+            bodyEl.innerHTML = `<pre class="overflow-x-auto text-emerald-400"><code>${escapeHtml(content)}</code></pre>`;
+        }
+
+        function closeFileModal() {
+            document.getElementById('file-modal').classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*   UTILIDADES Y HELPERS                                                     */
+        /* -------------------------------------------------------------------------- */
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            if (ext === 'pdf') return 'fa-solid fa-file-pdf text-rose-500';
+            if (['sh', 'bash', 'zsh'].includes(ext)) return 'fa-solid fa-terminal text-emerald-400';
+            if (['ps1', 'bat'].includes(ext)) return 'fa-solid fa-terminal text-blue-400';
+            if (['py', 'js', 'html', 'css', 'json', 'yml', 'yaml'].includes(ext)) return 'fa-solid fa-code text-cyan-400';
+            if (['pkt', 'pka'].includes(ext)) return 'fa-solid fa-network-wired text-amber-400';
+            if (['doc', 'docx'].includes(ext)) return 'fa-solid fa-file-word text-blue-500';
+            if (['md', 'txt'].includes(ext)) return 'fa-solid fa-file-lines text-slate-400';
+            if (['png', 'jpg', 'jpeg', 'svg', 'webp'].includes(ext)) return 'fa-solid fa-file-image text-purple-400';
+            return 'fa-solid fa-file text-slate-400';
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (!+bytes) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+        }
+
+        function setupSearch() {
+            const input = document.getElementById('global-search');
+            input.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                if (!query) {
+                    renderView(currentView, currentParam);
+                    return;
+                }
+                const filtered = appConfig.subjects.filter(s => s.nombre.toLowerCase().includes(query) || s.codigo.toLowerCase().includes(query) || s.desc.toLowerCase().includes(query));
+                const container = document.getElementById('app-content');
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <h2 class="text-lg font-bold">Resultados de búsqueda para "${query}" (${filtered.length})</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            ${filtered.map(s => `
+                                <div onclick="showView('subject', '${s.id}')" class="bg-white dark:bg-darkcard border border-slate-200 dark:border-darkborder rounded-xl p-4 cursor-pointer hover:border-brand-500">
+                                    <div class="font-bold text-sm text-brand-500">${s.codigo} - ${s.nombre}</div>
+                                    <div class="text-xs text-slate-400 mt-1">${s.desc}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function setupCodeCopyButtons() {
+            document.querySelectorAll('.markdown-body pre').forEach(pre => {
+                if (pre.querySelector('.copy-btn')) return;
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn absolute top-2 right-2 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-mono rounded border border-slate-700 transition';
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar';
+                pre.style.position = 'relative';
+                pre.appendChild(btn);
+
+                btn.onclick = () => {
+                    const code = pre.querySelector('code')?.innerText || pre.innerText;
+                    copyToClipboardSafe(code, btn);
+                };
+            });
+        }
+
+        function copyText(text, btnElement) {
+            copyToClipboardSafe(text, btnElement);
+        }
+
+        function copyToClipboardSafe(text, btnElement) {
+            const tempArea = document.createElement('textarea');
+            tempArea.value = text;
+            tempArea.style.position = 'fixed';
+            tempArea.style.opacity = '0';
+            document.body.appendChild(tempArea);
+            tempArea.select();
+            try {
+                document.execCommand('copy');
+                if (btnElement) {
+                    const orig = btnElement.innerHTML;
+                    btnElement.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Copiado`;
+                    setTimeout(() => btnElement.innerHTML = orig, 2000);
+                }
+            } catch (err) {
+                console.error('Error al copiar al portapapeles:', err);
+            } finally {
+                document.body.removeChild(tempArea);
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function escapeJsString(str) {
+            if (!str) return '';
+            return str.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+        }
+    </script>
+</body>
+</html>
